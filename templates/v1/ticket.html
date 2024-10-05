@@ -1,0 +1,91 @@
+{% extends "v1/base.html" %}
+{% load static %}
+{% block content %}
+
+<br><br><br><br>
+<input type="hidden" name="count" id="count" value="{{ len_passenger }}">
+{% for val in fl_details %}
+<input type="hidden" name="price" id="price" value="{{ val.Price }}">
+{% endfor %}
+{% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success m-2" id="msg" role="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';" style="float:right;size: 10px;">&times;</span> 
+            {{ message }}
+      </div>
+    {% endfor %}
+    {% endif %}
+<div class="cover">
+<div class="container">
+    <div class="col">
+        <h2 class="offset-md-4 text-success"><b>Voyage Travels</b>&nbsp;<b>E-Ticket</b></h2>
+        <br>
+        <ul >
+            <li>
+                This is your E-Ticket Iternary. You must bring it to the airport for check-in, and it is recommended you to retain a copy for your records.
+            </li>
+            <br>
+            <li>
+                Each passenger travelling needs a printed copy of this document for immigrations, customs, airport security checks and duty free purchases.
+            </li>
+            <br>
+            <li>
+                Economy Class passengers should report to airline check-in desks 3 hours prior to departure of all flights. First and Business Class passengers should report to airline check-in desks not later than 1 hour prior to departure. Boarding for your flight begins at least 35 minutes before your scheduled departure time. Gates close 15 minutes prior to departure
+            </li>
+        </ul>
+    </div>
+</div>
+<br><br>
+<div class="container">
+    <table class="table table-bordered" >
+        <thead class="table-info">
+            <tr><th colspan="2" >Flight Details</th></tr>
+        </thead>
+        <tbody>
+        {% for val in fl_details %}
+                    <tr><td><b>Airlines: </b>&nbsp;&nbsp;{{ val.airlines }}</td><td><b>Number:</b>&nbsp;&nbsp;{{ val.number }}</td></tr>
+                    <tr><td><b>From:  </b>&nbsp;&nbsp;{{ val.From }}</td><td><b>To :</b>&nbsp;&nbsp;{{ val.To }}</td> </tr>
+                    <tr><td><b>Class:</b>&nbsp;&nbsp;{{ val.class_type }}</td><td><b>Date Of Flight:</b>&nbsp;&nbsp;{{ val.Date }}</td></tr>  
+                    <tr><td><b>Time Of Flight:</b>&nbsp;&nbsp;{{ val.Time|time:"g:iA"|upper }}</td><td><b>Price: </b>&nbsp;&nbsp;$ {{ val.Price }}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br><br>
+<div class="container">
+    <table class="table table-bordered" >
+        <thead class="table-info">
+            <tr><th colspan="4" >Passengers Details</th></tr>
+        </thead>
+        <tbody>
+            {% for val,val1 in pass_list_ticket %}
+            <tr>
+                <td><b>Name:</b>&nbsp;&nbsp;{{ val1.Pass_name }}</td>
+                <td><b>Age:</b>&nbsp;&nbsp;{{ val1.age }}</td>
+                <td><b>Gender:</b>&nbsp;&nbsp;{{ val1.gender }}</td>
+                <td><b>Seat Number:</b>&nbsp;&nbsp;{{ val }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="table-danger"><td colspan="4"><b>Total:&nbsp;&nbsp;$<b id="add"></b>.00</b></td></tr>
+            <tr class="table-success"><td colspan="4" ><b>PAID</b></td></tr>
+        </tbody>
+    </table>
+    <br><br><br>
+    <button onclick="window.print()" class="btn btn-success offset-md-5">Print this page</button>
+</div>
+</div>
+<br><br><br>
+<script>
+var price = Number(document.getElementById('price').value);
+var c = Number(document.getElementById('count').value);
+console.log(price) 
+console.log(c) 
+if(c > 0){
+document.getElementById('add').innerHTML=(price*c)+100
+}
+else{
+    document.getElementById('add').innerHTML=''
+}
+</script>
+
+{% endblock content %}

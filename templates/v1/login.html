@@ -1,0 +1,32 @@
+{% extends "v1/base.html" %}
+
+{% block content %}
+<br><br><br><br>
+{% if messages %}
+{% for message in messages %}
+  <div class="alert alert-danger col-md-6 offset-md-3" id="msg" role="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';" style="float:right;size: 10px;">&times;</span> 
+        {{ message }}
+  </div>
+{% endfor %}
+{% endif %}
+<br><br><br><br>
+<div class="container jumbotron">
+    <div class="col-md-5 offset-md-3">
+        <h3 class="text-success offset-md-5"><b>Login</b></h3>
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <label for="">Username/Email</label>
+            <input type="text" name="uname" id="uname" class="form-control" placeholder='Username Or Email' required>
+            <br>
+            <label for="">Password</label>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+            <br>
+            <input type="submit" value="Login" class="btn btn-md btn-success offset-md-5">
+            <br><br>
+            <h5 class="offset-md-4">Not a memeber &nbsp; &nbsp;<a href="{% url 'register' %}" >Register</a></h5>
+            </form>
+    </div>
+</div>
+
+{% endblock content %}

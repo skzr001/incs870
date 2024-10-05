@@ -1,0 +1,165 @@
+{% extends "v1/base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    .one{
+        display: grid;
+        grid-template-columns:3fr,1fr;
+        padding : 10px;
+        margin-left:10px;
+    }
+
+</style>
+<br><br><br><br><br><br>
+<div class="conatiner offset-md-1">
+    <div class="row">
+        <div class="row">
+            <div class="col-md-8 box" style="margin-left:0px;">
+                <h3 style="margin-left:10px;">Your Flight Details</h3>
+                <table class="table table-borderless col-md-7" style="margin-left:10px;">
+                    <tbody >
+                        {% for val in fl_det %}
+                        <tr><td><b>Airlines: </b>&nbsp;&nbsp;{{ val.airlines }}</td><td><b>Number:</b>&nbsp;&nbsp;{{ val.number }}</td></tr>
+                        <tr><td><b>From:  </b>&nbsp;&nbsp;{{ val.From }}</td><td><b>To :</b>&nbsp;&nbsp;{{ val.To }}</td> </tr>
+                        <tr><td><b>Class:</b>&nbsp;&nbsp;{{ val.class_type }}</td><td><b>Date Of Flight:</b>&nbsp;&nbsp;{{ val.Date }}</td></tr>  
+                        <tr><td><b>Time Of Flight:</b>&nbsp;&nbsp;{{ val.Time|time:"g:iA"|upper }}</td><td><b>Price: </b>&nbsp;&nbsp;$ {{ val.Price }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-3  box" style="margin-left:40px;">
+                <h3>Total fair</h3>
+                <hr>
+                {% for val in fl_det %}
+                <h4 style="font-family: 'Segoe UI';"><input type="hidden" name="price" id="price" value="{{ val.Price }}">$&nbsp;{{ val.Price }}&nbsp;&nbsp; Ticket price</h4>
+                <h4  style="font-family: 'Segoe UI';">$&nbsp;12&nbsp;&nbsp;&nbsp; Tax Charge</h4>
+                <hr>
+                <h4  style="font-family: 'Segoe UI';"><input type="hidden" name="count" id="count" value="{{count}}"><b>Total &nbsp;&nbsp;$&nbsp;</b><label id="total"></label></h4>
+                {% endfor %}
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+<br><br><br>
+<div class="conatiner offset-sm-1 " >
+    <div class="col-md-8 box"style="margin-left:-20px;" >
+        <h3 style="margin-left:10px;">Passengers</h3>
+        <hr>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="row " style="margin-left: 10px;">
+                <div class="col">
+                    {{ form.Pass_name }}
+                </div>
+                <div class="col">
+                    {{ form.age }}
+                </div>
+                <div class="col" >
+                    {{ form.gender }}
+                </div>
+                <div class="col">
+                <button class="btn btn-md btn-info" type="submit"  name="submit"value="add" >+</button>
+                </div>
+            </div>
+        </form>
+        <br>
+            <table class="table" style="margin-left:10px;"> 
+            <tbody >
+                {% for val in pass_det_fin %}
+                <tr>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                    <td colspan="2"><b>Name:</b>&nbsp;&nbsp;{{ val.Pass_name }}</td>
+                    <td><b>Age:</b>&nbsp;&nbsp;{{ val.age }}</td>
+                    <td><b>Gender:</b>&nbsp;&nbsp;{{ val.gender }}</td>
+                    <td><button class="btn btn-md btn-danger" type="submit" name='submit' value="{{ val.id }}"><span class="glyphicon glyphicon-remove"></span></button>
+                    </td>
+                    </form>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+       
+            {% for val in fl_det %}
+            {% if count > 0 %}
+            <button class="btn btn-success btn-md offset-md-5" data-target="#payModal" data-toggle="modal" >Go to Payment</button>
+            {% endif %}
+            {% endfor %}
+       
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="modal" id="payModal"  style="margin-top:100px;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <br>
+                            <center><h3 class="modal-title text-success">Payment</h3></center>
+                            <span class="glyphicon glyphicon-remove offset-md-1" style="float: right" data-dismiss="modal"></span>
+                        </div>
+                        <div class="modal-body col-md-6 offset-md-3">
+                            {% for val in fl_det %}
+                            <form action="{% url 'pay' %}" method="post">
+                                <input type="hidden" name="fl_det" value="{{ val.id }}">
+                                <input type="hidden" name="price"  value="{{ val.Price }}">
+                                <input type="hidden" name="class" value="{{ val.class_type }}">
+                                
+                                {% csrf_token %}
+                                <div class="row">
+                                    <input type="text" name="card_name" id="card_name" class="form-control" placeholder="Crad Holder Name" required >
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <input type="text" name="card_num" id="card_num" class="form-control" placeholder="Card Holder Number"  title="eg: AB00CD12EF14TY45" required pattern="[0-9A-Z]{16}">
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <input type="text" name="expiry_month" id="expiry_month" class="form-control" placeholder="Expiry Month"  title="eg: 01" required pattern='(0[0-9]|[1][0-2])$'>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <input type="text" name="expiry_year" id="expiry_year" class="form-control" placeholder="Expiry Year" title="eg: 2000" required pattern='[0-9]{4}$'>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <input type="text" name="cvv_num" id="cvv_num" class="form-control" placeholder="CVV Number"  title="eg: 123"required pattern='[0-9]{3}$'>
+                                </div>
+                                <br>     
+                                <div class="row">
+                                    <button class="btn btn-md btn-success"  type="submit" >Pay</button>
+                                </div> 
+                                {% for val in pass_det_fin %}
+                                        <input type="hidden" name="Pass_name" value="{{ val.Pass_name }}">
+                                        <input type="hidden" name="age" value="{{ val.age }}">
+                                        <input type="hidden" name="gender" value="{{ val.gender }}">
+                                        <input type="hidden" name="id" value="{{ val.id }}">
+                                {% endfor %}
+                            </form>  
+                            {% endfor %}
+                        </div>
+                        <br><br>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var price = Number(document.getElementById('price').value);
+    var c = Number(document.getElementById('count').value);
+    console.log(price) 
+    console.log(c) 
+    if(c > 0){
+    document.getElementById('total').innerHTML=(price*c)+100
+    }
+    else{
+        document.getElementById('total').innerHTML=''
+    }
+</script>
+
+{% endblock content %}

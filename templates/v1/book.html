@@ -1,0 +1,114 @@
+{% extends "v1/base.html" %}
+{% load static %}
+{% block content %}
+<br><br><br>
+<br><br>
+<div class="container offset-md-2">
+    {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success m-2" id="msg" role="alert">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';" style="float:right;size: 10px;">&times;</span> 
+            {{ message }}
+      </div>
+    {% endfor %}
+    {% endif %}
+    <br><br>
+    <!-- <form action="{% url 'book' %}" method="get">
+  
+    <div class="container ">
+        <div class="row" style="margin-left:100px;">
+            {% for val in list_val %}
+            <input type="hidden" name="from_city" value="{{ from_city }}">
+            <input type="hidden" name="to_city" value="{{ to }}">
+            {% if val.From == from_city and val.To == to %}
+            <input type="hidden" name="number" value="{{ val.id }}">
+            {% endif %}
+            {% endfor %}
+            <div class="col col-md-2" >
+                <img src="{% static 'images/morning.jpg' %}" style=" margin-left:15px;width:100px;height:100px;"alt="" >
+                <br><br>
+                <button type="submit"  value="05:00-12:00" name="time" class="btn btn-warning"><label for="">05:00AM-12:00PM</label></button>
+               
+            </div>
+            <div class="col col-md-2" >
+                <img src="{% static 'images/noon.jpg' %}" style=" margin-left:15px;width:100px;height:100px;"alt="">
+                <br><br>
+                <button type="submit"  value="12:00-17:00" name="time" class="btn btn-warning"><label for="">12:00PM-5:00PM</label></button>
+            </div>
+            <div class="col col-md-2" >
+                <img src="{% static 'images/evening.jpg' %}" style=" margin-left:15px;width:100px;height:100px;"alt="">
+                <br><br>
+                <button type="submit"  value="17:00-21:00" name="time" class="btn btn-warning"><label for="">05:00PM-09:00PM</label></button>
+            </div>
+            <div class="col col-md-2" >
+                <img src="{% static 'images/night.png.jpg' %}" style=" margin-left:15px;width:100px;height:100px;"alt="">
+                <br><br>
+                <button type="submit"  value="21:00-05:00" name="time" class="btn btn-warning"><label for="">09:00PM-05:00AM</label></button>
+            </div>
+        </div>
+    </div>
+    </form> -->
+    <br><br>
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead class="table-success">
+                <tr>
+                    <th></th>
+                    <th>Airlines</th>
+                    <th>Number</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Price</th>
+                    <th>Class</th>
+                    <th>Book</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if fl_num != 0 %}
+               {% for val in list_val %}
+                    {% if  val.From == from_city and val.To == to  %}
+                        <tr>
+                                <td><span class="glyphicon glyphicon-plane"></span></td>
+                                <td>{{ val.airlines }}</td>
+                                <td>{{ val.number }}</td>
+                                <td>{{ val.From }}</td>
+                                <td>{{ val.To }}</td>
+                                <td>{{ val.Date }}</td>
+                                <td>{{ val.Time |time:'g:i A' }}</td>
+                                <td>CAD.{{ val.Price }}</td>
+                                <td>{{ val.class_type }}</td>
+                                {% if user.is_authenticated %}
+                                <td><a href="{% url 'booking' val.id %}" class="btn btn-md btn-success">Book</a></td>
+                                {% else %}
+                                <td><a href="{% url 'login' %}" class="btn btn-md btn-success">Book</a></td>
+                                {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {% for val in list_val %}
+                    <tr>
+                        <td><span class="glyphicon glyphicon-plane"></span></td>
+                        <td>{{ val.airlines }}</td>
+                        <td>{{ val.number }}</td>
+                        <td>{{ val.From }}</td>
+                        <td>{{ val.To }}</td>
+                        <td>{{ val.Date }}</td>
+                        <td>{{ val.Time|time:'g:i A'}}</td>
+                        <td>CAD.{{ val.Price }}</td>
+                        <td>{{ val.class_type }}</td>
+                        {% if user.is_authenticated %}
+                        <td><a href="{% url 'booking' val.id %}" class="btn btn-md btn-success">Book</a></td>
+                        {% else %}
+                        <td><a href="{% url 'login' %}" class="btn btn-md btn-success">Book</a></td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock content %}

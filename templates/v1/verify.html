@@ -1,0 +1,28 @@
+{% extends "v1/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<br><br><br><br>
+{% if messages %}
+{% for message in messages %}
+  <div class="alert alert-danger col-md-6 offset-md-3" id="msg" role="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';" style="float:right;size: 10px;">&times;</span> 
+        {{ message }}
+  </div>
+{% endfor %}
+{% endif %}
+<br><br><br><br>
+<div class="container jumbotron">
+    <div class="col-md-5 offset-md-3">
+        <form action="" method="POST", autocomplete="off">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <!-- input type="text" name="uname" id="uname" class="form-control" placeholder='5 digits SMS code' required -->
+
+            <input type="submit" class="btn btn-md btn-success offset-md-5">
+
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

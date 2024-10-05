@@ -1,0 +1,79 @@
+{% extends "v1/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="conatiner jumbotron header">
+    <br><br><br>
+{% if messages %}
+{% for message in messages %}
+  <div class="alert alert-danger col-md-6 offset-md-3" id="msg" role="alert">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';" style="float:right;size: 10px;">&times;</span> 
+        {{ message }}
+  </div>
+{% endfor %}
+{% endif %}
+    <br><br><br><br><br>
+    <form action="{% url 'book' %}" method="post" >
+    {% csrf_token %}
+    <div class="row col-md-9">
+        <div class="col offset-md-5 search">
+            <select name="from" id="from" class="form-control" style="border-radius: 20px 20px 20px 20px;" required>
+                <option value=''>From City</option>
+                <option value="LAX">LAX</option>
+                <option value="JFK">JFK</option>
+            </select>
+        </div>
+        <div class="col search1">
+            <select name="to" id="to" class="form-control" style="border-radius: 20px 20px 20px 20px;"required >
+                <option value='' >To City</option>
+                <option value="LAX">LAX</option>
+                <option value="JFK">JFK</option>
+              </select>  
+        </div>
+        <div class="col">
+            <button class="btn btn-md" id="btn" type="submit" >Search</button>
+        </div>       
+    </div>
+    </form>
+
+</div>
+<div class="container dom">
+    <div class="row ">
+        <div class="col img-hover">
+           <a href="https://en.wikipedia.org/wiki/Hyderabad"><img src="{% static 'images/gugong.jpg' %}" style="width:300px; height:200px;"alt=""></a>
+           <h3 style="font-family:Amaranth; color:rgba(0, 0, 0, 0.377)">Beijing</h3>
+
+        </div>
+        <div class="col img-hover">
+            <a href="https://en.wikipedia.org/wiki/Goa"><img src="{% static 'images/london.png' %}" style="width:300px; height:200px;" alt=""></a>
+            <h3  style="font-family:Amaranth;  color:rgba(0, 0, 0, 0.377)">London</h3>
+         </div>
+         <div class="col img-hover">
+            <a href="https://en.wikipedia.org/wiki/United_States"><img src="{% static 'images/usa.png' %}" style="width:300px; height:200px;"alt=""></a>
+            <h3  style="font-family:Amaranth;  color:rgba(0, 0, 0, 0.377)">New York</h3>
+         </div>
+    </div>
+</div>
+<br><br>
+<div class="container dom">
+    <div class="row ">
+        <div class="col img-hover">
+           <a href="https://en.wikipedia.org/wiki/Paris"><img src="{% static 'images/paris.png' %}" style="width:300px; height:200px;"alt=""></a>
+           <h3 style="font-family:Amaranth;  color:rgba(0, 0, 0, 0.377)">Paris</h3>
+
+        </div>
+        <div class="col img-hover">
+            <a href="https://en.wikipedia.org/wiki/Japan"><img src="{% static 'images/japan.png' %}" style="width:300px; height:200px;" alt=""></a>
+            <h3  style="font-family:Amaranth;  color:rgba(0, 0, 0, 0.377)">Tokyo</h3>
+
+         </div>
+         <div class="col img-hover">
+            <a href="https://en.wikipedia.org/wiki/Mumbai"><img src="{% static 'images/mumbai.png' %}" style="width:300px; height:200px;"alt=""></a>
+            <h3  style="font-family:Amaranth; color:rgba(0, 0, 0, 0.377)" >Mumbai</h3>
+
+         </div>
+    </div>
+</div>
+<br><br>
+
+{% endblock content %}

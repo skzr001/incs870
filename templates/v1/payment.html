@@ -1,0 +1,38 @@
+{% extends "v1/base.html" %}
+{% load static %}
+{% block content %}
+<br><br><br><br><br>
+<div class="container  col-md-5 "> 
+        <div class="jumbotron box1 offset-md-3 col">
+            <form action="" method="post">
+                <input type="hidden" name="fl_det">
+                {% csrf_token %}
+                <div class="row">
+                    <input type="text" name="card_name" id="card_name" class="form-control" placeholder="Crad Holder Name" required>
+                </div>
+                <br>
+                <div class="row">
+                    <input type="text" name="card_num" id="card_num" class="form-control" placeholder="Card Holder Number" required>
+                </div>
+                <br>
+                <div class="row">
+                    <input type="text" name="expiry_month" id="expiry_month" class="form-control" placeholder="Expiry Month" required>
+                </div>
+                <br>
+                <div class="row">
+                    <input type="text" name="expiry_year" id="expiry_year" class="form-control" placeholder="Expiry Year" required>
+                </div>
+                <br>
+                <div class="row">
+                    <input type="text" name="cvv_num" id="cvv_num" class="form-control" placeholder="CVV Number" required>
+                </div>
+                <br>
+                <div class="row">
+                    <button class="btn btn-md btn-success" type="submit">Pay</button>
+                    <a href="{% url 'ticket' %} " class="btn btn-info">Show Ticket</a>
+                </div>
+        
+            </form>   
+        </div>
+</div>
+{% endblock content %}
